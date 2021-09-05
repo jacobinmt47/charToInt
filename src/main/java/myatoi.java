@@ -5,7 +5,8 @@
  */
 public class myatoi {
     private int sum(String s){
-        return Integer.valueOf(s);//cheating needs to be done with chars and ints
+        s=s.trim();
+        return Integer.parseInt(s);//cheating needs to be done with chars and ints
     }
     private String onlyDigits(String s) {
         char array[] = new char[s.length()];
@@ -56,6 +57,7 @@ public class myatoi {
 
     public int myAtoi(String s) {
         Boolean isPositive = true;
+        s = s.toLowerCase();
         s = s.strip();
         if (s.isBlank()) {
             return 0;
@@ -79,12 +81,20 @@ public class myatoi {
                 return Integer.MIN_VALUE;
             }
         }
-        
-        return 0;
+        if(isPositive){
+            return this.sum(s);
+        }
+        else{
+            return 0-(this.sum(s));
+        }
     }
 
     public static void main(String args[]) {
-
+        myatoi m = new myatoi();
+        int i = m.myAtoi("-123");
+        System.out.println(i);
+        i = m.myAtoi("234 words");
+        System.out.println(i);
     }
 
 }
