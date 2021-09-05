@@ -4,44 +4,85 @@
  * @author jacob
  */
 public class myatoi {
-    /**
-     * can only contain digits + - and .
-     * @param s
-     * @return 
-     */
-    private Boolean isGoodChar(Character c){
-        Boolean d = Character.isDigit(c);
-        Boolean p =(c=='+');
-        Boolean m =(c=='-');
-        Boolean r =(c=='.');
-        return (d||p||m||r);
+
+    private String onlyDigits(String s) {
+        char array[] = new char[s.length()];
+        int nextchar = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                array[nextchar] = s.charAt(i);
+                nextchar++;
+            }
+        }
+        return new String(array);
     }
 
-    private String splitPeriod(String s){
+    private Boolean isMax(String s, Boolean isPositive) {
+        if (s.length() > 10) {
+            return true;
+        }
+        if (s.length() == 10) {
+            if (s.charAt(0) == '1') {
+                return false;
+            }
+            if (s.charAt(0) == '2') {
+                //do lots of stuff based on if greater that 2**31-1 or less that 2**31
+            }
+            return true;
+        }
+        //string should be under 10 digits
+        return false;
+    }
+
+    /**
+     * can only contain digits + - and .
+     *
+     * @param s
+     * @return
+     */
+    private Boolean isGoodChar(Character c) {
+        Boolean d = Character.isDigit(c);
+        Boolean p = (c == '+');
+        Boolean m = (c == '-');
+        Boolean r = (c == '.');
+        return (d || p || m || r);
+    }
+
+    private String splitPeriod(String s) {
         return s.split("/[^.]*/")[0];//find first string that has a period
     }
-    public int myAtoi(String s){
-       Boolean isPositive =true;
-       s = s.strip();
-       if(s.isBlank()){
-           return 0;
-       }
-       if(!this.isGoodChar(s.charAt(0)))
-       {
-           return 0;
-       }
-       if(s.indexOf('.')>-1){
-           s = this.splitPeriod(s);
-       }
-       //TODO:find if negative remove any tailing words
-       if(s.charAt(0)=='-'){
-           isPositive = false;
-       }
-       return 0; 
-    }
-    
-    public static void main(String args[]){
+
+    public int myAtoi(String s) {
+        Boolean isPositive = true;
+        s = s.strip();
+        if (s.isBlank()) {
+            return 0;
+        }
+        if (!this.isGoodChar(s.charAt(0))) {
+            return 0;
+        }
+        if (s.indexOf('.') > -1) {
+            s = this.splitPeriod(s);
+        }
+        //TODO:find if negative remove any tailing words
+        if (s.charAt(0) == '-') {
+            isPositive = false;
+        }
+        s = this.onlyDigits(s);
+        if(this.isMax(s, isPositive)){
+            if(isPositive){
+                return Integer.MAX_VALUE;
+            }
+            else{
+                return Integer.MIN_VALUE;
+            }
+        }
         
+        return 0;
     }
-    
+
+    public static void main(String args[]) {
+
+    }
+
 }
