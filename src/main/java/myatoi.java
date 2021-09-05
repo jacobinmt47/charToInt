@@ -4,7 +4,9 @@
  * @author jacob
  */
 public class myatoi {
-
+    private int sum(String s){
+        return Integer.valueOf(s);//cheating needs to be done with chars and ints
+    }
     private String onlyDigits(String s) {
         char array[] = new char[s.length()];
         int nextchar = 0;
