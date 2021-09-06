@@ -8,18 +8,17 @@ public class myatoi {
     private String rmLeadingZeros(String s) {
         char arr[] = new char[s.length()];
         int nextChar = 0;
-        Boolean leading = true;
+        Boolean trailing = false;
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) != '0' || leading) {
+            if (s.charAt(i) != '0' || trailing) {
                 arr[nextChar] = s.charAt(i);
                 nextChar++;
-            } else {
-                leading = false;
-                break;
-            }
+                trailing = true;
+            } 
         }
         String ret = new String(arr);
-        return ret.strip();
+        ret = ret.substring(0, nextChar);
+        return ret;
     }
 
     private int sum(String s) {
@@ -32,7 +31,6 @@ public class myatoi {
             arr[i] = s.charAt(l) - '0';
             arr[i] = arr[i] * powten;
             powten = powten * 10;
-
         }
         int sum = 0;
         for (int j = 0; j < s.length(); j++) {
@@ -45,16 +43,14 @@ public class myatoi {
         char array[] = new char[s.length()];
         int nextchar = 0;
         for (int i = 0; i < s.length(); i++) {
-            if ((s.charAt(i)>='0'&&(s.charAt(i)<='9'))) {
+            if ((s.charAt(i) >= '0' && (s.charAt(i) <= '9'))) {
                 array[nextchar] = s.charAt(i);
                 nextchar++;
-            }
-            else{
-                return "0";
+            } else {
+                break;
             }
         }
         String ret = new String(array);
-
         return ret.trim();
     }
 
@@ -94,7 +90,7 @@ public class myatoi {
      * @return
      */
     private Boolean isGoodChar(Character c) {
-        Boolean d = (c>='0'&&c<='9');
+        Boolean d = (c >= '0' && c <= '9');
         Boolean p = (c == '+');
         Boolean m = (c == '-');
         Boolean r = (c == '.');
@@ -118,10 +114,20 @@ public class myatoi {
 
         if (s.charAt(0) == '-') {
             isPositive = false;
-        }
-        if (!this.isGoodChar(s.charAt(0))) {
+            s = s.substring(1);
+            if (s.length() == 0) {
                 return 0;
             }
+        }
+        if (s.charAt(0) == '+') {
+            s = s.substring(1);
+            if (s.length() == 0) {
+                return 0;
+            }
+        }
+        if (!this.isGoodChar(s.charAt(0))) {
+            return 0;
+        }
         s = this.onlyDigits(s);
         s = this.rmLeadingZeros(s);
         if (this.isMax(s, isPositive)) {
@@ -140,18 +146,17 @@ public class myatoi {
 
     public static void main(String args[]) {
         myatoi m = new myatoi();
-        int i = m.myAtoi("-123");
-        System.out.println(i);
-        i = m.myAtoi("234 words");
-        System.out.println(i);
-       i = m.myAtoi("00000-42a1234");
-        System.out.println(i);
+        System.out.println(m.myAtoi("-123"));
+        System.out.println(m.myAtoi("00000-42a1234"));
         System.out.println(m.myAtoi("9999999999"));
         System.out.println(m.myAtoi("4193 with words"));
         System.out.println(m.myAtoi("3.14159"));
         System.out.println(m.myAtoi("21474836460"));
         System.out.println(m.myAtoi("0100"));
         System.out.println(m.myAtoi("+-12"));
-
+        System.out.println(m.myAtoi("-"));
+        System.out.println(m.myAtoi("+1"));
+        System.out.println(m.myAtoi("  0000000000012345678")); // should be 12345678
+        System.out.println(m.myAtoi("21474836460"));
     }
 }
